@@ -1,10 +1,10 @@
 ;; chronometer.el --- a [not so] simple chronometer for Emacs
 
-;; Copyright  (C)  2004  Marcelo Toledo <marcelo@marcelotoledo.org>
+;; Copyright  (C)  2004  Marcelo Toledo <marcelo@marcelotoledo.com>
 
-;; Author: Marcelo Toledo <marcelo@marcelotoledo.org>
-;; Maintainer: Marcelo Toledo <marcelo@marcelotoledo.org>
-;; URL: http://www.marcelotoledo.org/stuff/projetos/chronometer
+;; Author: Marcelo Toledo <marcelo@marcelotoledo.com>
+;; Maintainer: Marcelo Toledo <marcelo@marcelotoledo.com>
+;; URL: https://github.com/marcelotoledo/chronometer
 ;; Created: 21 Jul 2004
 ;; Version: 1.0
 ;; Keywords: tools, convenience
