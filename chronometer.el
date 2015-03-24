@@ -8,6 +8,7 @@
 ;; Created: 21 Jul 2004
 ;; Version: 1.0
 ;; Keywords: tools, convenience
+;; Package-Requires:
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -26,16 +27,9 @@
 
 ;; Commentary:
 
-;; This is the first release, expect more in the next and feel free to
-;; feed me with patches, wishes, bugs and whatever you you think will
-;; worth it.
-
 ;; This mode is for counting times. I basically created it because I
 ;; used to cook pizza while coding and I used to forget the time and a
-;; few minutes later I could smell a burned pizza. The result of this
-;; is displayed in pictures, right here:
-
-;; http://www.marcelotoledo.org/fotos/2003/pizza_queimada
+;; few minutes later I could smell a burned pizza.
 
 ;; You can use it for whatever purpose you like, but the typical
 ;; scenario is to keep alerted of how much time has past.
@@ -236,15 +230,9 @@
 (defun chronometer-mode ()
   "A [not so] simple chronometer for Emacs.
 
-This is the first release, expect more in the next and feel free to feed
-me with patches, wishes, bugs and whatever you you think will worth it.
-
 This mode is for counting times. I basically created it because I used
 to cook pizza while coding and I used to forget the time and a few
-minutes later I could smell a burned pizza. The result of this is
-displayed in pictures, right here:
-
-http://www.marcelotoledo.org/fotos/2003/pizza_queimada
+minutes later I could smell a burned pizza. 
 
 You can use it for whatever purpose you like, but the typical scenario
 is to keep alerted of how much time has past.
