@@ -39,12 +39,13 @@ It will automaticaly start from zero and increment every one second.
 
 ### Available commands
 
-* a - Set alarm
-* s - Stop alarm
-* p - Pause chronometer
-* r - Restart chronometer
-* h - Hide buffer
-* q - Exit
-* ? - Help
+| Command | Description         |
+| a       | Set Alarm           |
+| s       | Stop Alarm          |
+| p       | Pause Chronometer   |
+| r       | Restart chronometer |
+| h       | Hide                |
+| q       | Quit                |
+| ?       | Help                |
 
 If you hide the buffer and want to come back just call `M-x chronometer` again.
