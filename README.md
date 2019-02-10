@@ -1,7 +1,7 @@
 # chronometer
 ---
 
-![Screenshot](screenshot/chronometer.png)
+![Screenshot](screenshots/chronometer.png)
 
 **A Chronometer for GNU Emacs**
 
