@@ -81,8 +81,7 @@
 (defun chronometer-set-alarm ()
   "Set alarm to the minute you would like to alerted."
   (interactive)
-  (let ((value (read-from-minibuffer "Set alarm to what minute? ")))
-    (setq chronometer-alarm value)))
+  (setq chronometer-alarm (read-from-minibuffer "Set alarm to what minute? ")))
 
 (defun chronometer-unset-alarm ()
   "Unset alarm."
@@ -97,24 +96,20 @@
   (setq chronometer-start-time (current-time)))
 
 (defun chronometer-hide ()
-  "Hide chronometer buffer."
+  "Hide Chronometer buffer."
   (interactive)
-  (set-buffer chronometer-default-buffer)
-  (while (get-buffer-window chronometer-default-buffer)
+  (when (get-buffer-window chronometer-default-buffer)
     (delete-window (get-buffer-window chronometer-default-buffer))))
 
 (defun chronometer-quit ()
-  "Quit chronometer."
+  "Quit Chronometer."
   (interactive)
-  (set-buffer chronometer-default-buffer)
-  (let ((inhibit-read-only t))
-    (erase-buffer))
-  (while (get-buffer-window chronometer-default-buffer)
-    (delete-window (get-buffer-window chronometer-default-buffer)))
-  (setq chronometer-running nil)
-  (kill-buffer chronometer-default-buffer)
-  (chronometer-cancel-timer)
-  (message "Bye"))
+  (when (get-buffer-window chronometer-default-buffer)
+    (delete-window (get-buffer-window chronometer-default-buffer))
+    (setq chronometer-running nil)
+    (kill-buffer chronometer-default-buffer)
+    (chronometer-cancel-timer)
+    (message "Bye")))
 
 (defun chronometer-help ()
   "Quick reference:
@@ -128,13 +123,13 @@
 * ? - Help"
   (interactive)
   (if (eq last-command 'chronometer-help)
-    (let ((mode-name "chronometer-mode")
-          (major-mode 'chronometer-mode)
-          (g-map (current-global-map))
-          (win (selected-window)))
-      (require 'ehelp)
-      (describe-mode)
-      (select-window win))
+      (let ((mode-name "chronometer-mode")
+            (major-mode 'chronometer-mode)
+            (g-map (current-global-map))
+            (win (selected-window)))
+        (require 'ehelp)
+        (describe-mode)
+        (select-window win))
     (message nil))
   (let ((one (one-window-p t))
         (win (selected-window))
