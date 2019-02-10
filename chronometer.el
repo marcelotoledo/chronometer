@@ -1,11 +1,12 @@
-;;; chronometer.el --- a [not so] simple chronometer for Emacs
+;;; chronometer.el --- a [not so] simple chronometer for Emacs -*- lexical-binding: t; -*-
 
 ;; Copyright  (C)  2004-2019  Marcelo Toledo
 
 ;; Author: Marcelo Toledo <marcelo@marcelotoledo.com>
 ;; Maintainer: Marcelo Toledo <marcelo@marcelotoledo.com>
 ;; Created: 21 Jul 2004
-;; Version: 1.0
+;; Package-Requires: Package-Requires: ((emacs "24.1"))
+;; Version: 2.0
 ;; Keywords: tools, convenience
 ;; URL: https://github.com/marcelotoledo/chronometer
 
@@ -38,7 +39,7 @@
 (defconst chronometer-default-buffer "*chronometer*"
   "The default working buffer.")
 
-(defconst chronometer-buffer-size -5
+(defconst chronometer-buffer-size -4
   "The height of `chronometer-default-buffer'.")
 
 (defconst chronometer-prompt "Chronometer=> "
@@ -76,13 +77,13 @@
 
 (defvar chronometer-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "s") 'chronometer-stop-alarm)
-    (define-key map (kbd "a") 'chronometer-set-alarm)
-    (define-key map (kbd "q") 'chronometer-quit)
-    (define-key map (kbd "p") 'chronometer-toggle-pause)
-    (define-key map (kbd "?") 'chronometer-help)
-    (define-key map (kbd "r") 'chronometer-restart)
-    (define-key map (kbd "h") 'chronometer-hide)
+    (define-key map (kbd "s") #'chronometer-stop-alarm)
+    (define-key map (kbd "a") #'chronometer-set-alarm)
+    (define-key map (kbd "q") #'chronometer-quit)
+    (define-key map (kbd "p") #'chronometer-toggle-pause)
+    (define-key map (kbd "?") #'chronometer-help)
+    (define-key map (kbd "r") #'chronometer-restart)
+    (define-key map (kbd "h") #'chronometer-hide)
     map)
   "Chronometer mode map.")
 
