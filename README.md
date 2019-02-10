@@ -43,7 +43,7 @@ It will automaticaly start from zero and increment every one second.
 ### Available commands
 
 * a - Set alarm
-* u - Unset alarm
+* s - Stop alarm
 * p - Pause chronometer
 * r - Restart chronometer
 * h - Hide buffer
@@ -51,9 +51,3 @@ It will automaticaly start from zero and increment every one second.
 * ? - Help
 
 If you hide the buffer and want to come back just call `M-x chronometer` again.
-
-
-## To Do
----
-
-Look for enhancements in github issues tab.

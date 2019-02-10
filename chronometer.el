@@ -61,7 +61,7 @@
 
 (defvar chronometer-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "u") 'chronometer-unset-alarm)
+    (define-key map (kbd "s") 'chronometer-stop-alarm)
     (define-key map (kbd "a") 'chronometer-set-alarm)
     (define-key map (kbd "q") 'chronometer-quit)
     (define-key map (kbd "p") 'chronometer-toggle-pause)
@@ -83,7 +83,7 @@
   (interactive)
   (setq chronometer-alarm (read-from-minibuffer "Set alarm to what minute? ")))
 
-(defun chronometer-unset-alarm ()
+(defun chronometer-stop-alarm ()
   "Unset alarm."
   (interactive)
   (setq chronometer-alarm nil
@@ -115,35 +115,18 @@
   "Quick reference:
 
 * a - Set alarm
-* u - Unset alarm
+* s - Stop alarm
 * p - Toggle pause
 * r - Restart chronometer
-* h - Hide
+* h - Hideeb
 * q - Exit
 * ? - Help"
   (interactive)
-  (if (eq last-command 'chronometer-help)
-      (let ((mode-name "chronometer-mode")
-            (major-mode 'chronometer-mode)
-            (g-map (current-global-map))
-            (win (selected-window)))
-        (require 'ehelp)
-        (describe-mode)
-        (select-window win))
-    (message nil))
-  (let ((one (one-window-p t))
-        (win (selected-window))
-        (help-buf (get-buffer-create "*Help*")))
-    (save-window-excursion
-      (with-output-to-temp-buffer "*Help*"
-        (princ (documentation 'chronometer-help)))
-      (if one
-          (shrink-window-if-larger-than-buffer
-           (get-buffer-window help-buf)))
-      (message "Type any key to continue.")
-      (select-window win)
-      (sit-for 360))
-    (select-window win)))
+  (save-window-excursion
+    (with-output-to-temp-buffer "*Help*"
+      (princ (documentation 'chronometer-help)))
+    (message "Type any key to continue.")
+    (sit-for 10)))
 
 
 
@@ -173,6 +156,10 @@
   "Cancel the chronometer timer."
   (cancel-timer chronometer-timer))
 
+(defun chronometer-alarm-alert ()
+  (invert-face 'mode-line)
+  (run-with-timer 0.1 nil #'invert-face 'mode-line))
+
 (defun chronometer-loop ()
   "This function runs every 'chronometer-interval' second(s) and display data in the buffer."
   (with-current-buffer chronometer-default-buffer
@@ -187,7 +174,7 @@
       (when chronometer-paused
         (insert " (Paused)"))
       (when chronometer-alarm
-        (insert " (Alarm: " chronometer-alarm " min.)")
+        (insert " (Alarm set to " chronometer-alarm " min)")
         (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
                    (null chronometer-alarm-ringing))
           (progn
@@ -220,6 +207,7 @@ Use the following commands to use it:
   (use-local-map chronometer-map)
   (setq major-mode 'chronometer-mode
         mode-name "Chronometer"
+        ring-bell-function 'chronometer-alarm-alert
         buffer-read-only t))
 
 (provide 'chronometer)
