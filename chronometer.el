@@ -71,41 +71,7 @@
     map)
   "Chronometer mode map.")
 
-;;;###autoload
-(defun chronometer-mode ()
-  "A [not so] simple chronometer for Emacs.
-
-Use `M-x chronometer RET' to start, it will automaticaly start from zero and will keep incrementing every second.
-
-Use the following commands to use it:
-
-\\{chronometer-map}"
-  (interactive)
-  (chronometer-first-run)
-  (chronometer-show-buffer)
-  (kill-all-local-variables)
-  (use-local-map chronometer-map)
-  (setq major-mode 'chronometer-mode
-        mode-name "Chronometer"
-        buffer-read-only t))
-
-(defun chronometer-first-run ()
-  (unless chronometer-running
-    (chronometer-unset-alarm)
-    (when chronometer-paused (chronometer-toggle-pause))
-    (chronometer-restart)
-    (get-buffer-create chronometer-default-buffer)
-    (setq chronometer-timer (run-with-timer 1 chronometer-interval 'chronometer-loop)
-          chronometer-running t)))
-
-(defun chronometer-show-buffer ()
-  (cond ((not (get-buffer-window chronometer-default-buffer))
-         (let ((split-window-keep-point nil)
-               (window-min-height 2))
-           (select-window (split-window-vertically chronometer-buffer-size))
-           (switch-to-buffer chronometer-default-buffer)))
-        ((not (eq (current-buffer) chronometer-default-buffer))
-         (select-window (get-buffer-window chronometer-default-buffer)))))
+
 
 (defun chronometer-toggle-pause ()
   "Toggle pause."
@@ -131,45 +97,6 @@ Use the following commands to use it:
   (interactive)
   "Start chronometer from zero."
   (setq chronometer-start-time (current-time)))
-
-(defun chronometer-loop ()
-  "This function runs every 'chronometer-interval' second(s) and display data in the buffer."
-  (with-current-buffer chronometer-default-buffer
-    (if chronometer-paused
-        (chronometer-increment-start-time))
-    (let ((time-elapsed (format-time-string "%H:%M:%S" (time-subtract (current-time) chronometer-start-time) t))
-          (minutes-elapsed (+ (* (string-to-number (format-time-string "%H" (time-subtract (current-time) chronometer-start-time) t)) 60) (string-to-number (format-time-string "%M" (time-subtract (current-time) chronometer-start-time) t))))
-          (inhibit-read-only t))
-      (erase-buffer)
-      (goto-char (point-min))
-      (insert chronometer-prompt time-elapsed)
-      (when chronometer-paused
-        (insert " (Paused)"))
-      (when chronometer-alarm
-        (insert " (Alarm: " chronometer-alarm " min.)")
-        (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
-                   (null chronometer-alarm-ringing))
-          (progn
-            (setq chronometer-alarm-ringing t)
-            (chronometer-mode))))
-      (when chronometer-alarm-ringing
-        (if chronometer-alarm-ringing-message
-            (progn
-              (setq chronometer-alarm-ringing-message nil)
-              (insert " Alarm!! Type 'u' to stop ringing!")
-              (beep))
-          (progn
-            (setq chronometer-alarm-ringing-message t)
-            (insert "         Type 'u' to stop ringing!")
-            (beep)))))))
-
-(defun chronometer-increment-start-time ()
-  "Add one second in 'chronometer-start-time'."
-  (setf (cadr chronometer-start-time) (+ (cadr chronometer-start-time) 1)))
-
-(defun chronometer-cancel-timer ()
-  "Cancel the chronometer timer."
-  (cancel-timer chronometer-timer))
 
 (defun chronometer-hide ()
   "Hide chronometer buffer."
@@ -224,6 +151,83 @@ Use the following commands to use it:
       (select-window win)
       (sit-for 360))
     (select-window win)))
+
+
+
+(defun chronometer-first-run ()
+  (unless chronometer-running
+    (chronometer-unset-alarm)
+    (when chronometer-paused (chronometer-toggle-pause))
+    (chronometer-restart)
+    (get-buffer-create chronometer-default-buffer)
+    (setq chronometer-timer (run-with-timer 1 chronometer-interval 'chronometer-loop)
+          chronometer-running t)))
+
+(defun chronometer-show-buffer ()
+  (cond ((not (get-buffer-window chronometer-default-buffer))
+         (let ((split-window-keep-point nil)
+               (window-min-height 2))
+           (select-window (split-window-vertically chronometer-buffer-size))
+           (switch-to-buffer chronometer-default-buffer)))
+        ((not (eq (current-buffer) chronometer-default-buffer))
+         (select-window (get-buffer-window chronometer-default-buffer)))))
+
+(defun chronometer-increment-start-time ()
+  "Add one second in 'chronometer-start-time'."
+  (setf (cadr chronometer-start-time) (+ (cadr chronometer-start-time) 1)))
+
+(defun chronometer-cancel-timer ()
+  "Cancel the chronometer timer."
+  (cancel-timer chronometer-timer))
+
+(defun chronometer-loop ()
+  "This function runs every 'chronometer-interval' second(s) and display data in the buffer."
+  (with-current-buffer chronometer-default-buffer
+    (if chronometer-paused
+        (chronometer-increment-start-time))
+    (let ((time-elapsed (format-time-string "%H:%M:%S" (time-subtract (current-time) chronometer-start-time) t))
+          (minutes-elapsed (+ (* (string-to-number (format-time-string "%H" (time-subtract (current-time) chronometer-start-time) t)) 60) (string-to-number (format-time-string "%M" (time-subtract (current-time) chronometer-start-time) t))))
+          (inhibit-read-only t))
+      (erase-buffer)
+      (goto-char (point-min))
+      (insert chronometer-prompt time-elapsed)
+      (when chronometer-paused
+        (insert " (Paused)"))
+      (when chronometer-alarm
+        (insert " (Alarm: " chronometer-alarm " min.)")
+        (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
+                   (null chronometer-alarm-ringing))
+          (progn
+            (setq chronometer-alarm-ringing t)
+            (chronometer-mode))))
+      (when chronometer-alarm-ringing
+        (if chronometer-alarm-ringing-message
+            (progn
+              (setq chronometer-alarm-ringing-message nil)
+              (insert " Alarm!! Type 'u' to stop ringing!")
+              (beep))
+          (progn
+            (setq chronometer-alarm-ringing-message t)
+            (insert "         Type 'u' to stop ringing!")
+            (beep)))))))
+
+;;;###autoload
+(defun chronometer-mode ()
+  "A [not so] simple chronometer for Emacs.
+
+Use `M-x chronometer RET' to start, it will automaticaly start from zero and will keep incrementing every second.
+
+Use the following commands to use it:
+
+\\{chronometer-map}"
+  (interactive)
+  (chronometer-first-run)
+  (chronometer-show-buffer)
+  (kill-all-local-variables)
+  (use-local-map chronometer-map)
+  (setq major-mode 'chronometer-mode
+        mode-name "Chronometer"
+        buffer-read-only t))
 
 (provide 'chronometer)
 
