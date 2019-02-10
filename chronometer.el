@@ -76,9 +76,7 @@
 (defun chronometer-toggle-pause ()
   "Toggle pause."
   (interactive)
-  (if chronometer-paused
-      (setq chronometer-paused nil)
-    (setq chronometer-paused t)))
+  (setq chronometer-paused (if chronometer-paused nil t)))
 
 (defun chronometer-set-alarm ()
   "Set alarm to the minute you would like to alerted."
@@ -183,7 +181,7 @@
 (defun chronometer-loop ()
   "This function runs every 'chronometer-interval' second(s) and display data in the buffer."
   (with-current-buffer chronometer-default-buffer
-    (if chronometer-paused
+    (when chronometer-paused
         (chronometer-increment-start-time))
     (let ((time-elapsed (format-time-string "%H:%M:%S" (time-subtract (current-time) chronometer-start-time) t))
           (minutes-elapsed (+ (* (string-to-number (format-time-string "%H" (time-subtract (current-time) chronometer-start-time) t)) 60) (string-to-number (format-time-string "%M" (time-subtract (current-time) chronometer-start-time) t))))

@@ -1,6 +1,8 @@
 # chronometer
 ---
 
+![Screenshot](screenshot/chronometer.png)
+
 **A Chronometer for GNU Emacs**
 
 This is a major mode to help you keep track of time. 
