@@ -32,8 +32,17 @@
 (defconst chronometer-buffer-size -5
   "The height of `chronometer-default-buffer'")
 
-(defconst chronometer-prompt "Chronometer===> "
+(defconst chronometer-prompt "Chronometer=> "
   "The prompt that will be displayed in the chronometer buffer.")
+
+(defconst chronometer-prompt-space "    "
+  "The space between chronometer and important messages.")
+
+(defconst chronometer-prompt-paused "Paused"
+  "Message when Paused.")
+
+(defconst chronometer-prompt-alarm "Beep! - Type u to stop beeping!"
+  "Message when beeping.")
 
 (defvar chronometer-start-time nil
   "Chronometer start time. If it's paused this value will be incremented.")
@@ -43,9 +52,6 @@
 
 (defvar chronometer-alarm-ringing nil
   "If the alarm is ringing.")
-
-(defvar chronometer-alarm-ringing-message t
-  "If `chronometer-alarm-ringing' is t then the ringing message will use this variable to cycle between showing and blank to alert the user.")
 
 (defvar chronometer-timer nil
   "Timer object.")
@@ -87,8 +93,7 @@
   "Unset alarm."
   (interactive)
   (setq chronometer-alarm nil
-        chronometer-alarm-ringing nil
-        chronometer-alarm-ringing-message t))
+        chronometer-alarm-ringing nil))
 
 (defun chronometer-restart ()
   (interactive)
@@ -129,6 +134,9 @@
     (sit-for 10)))
 
 
+
+(defun chronometer-prompt-alarm-set (minutes)
+  (format "Alarm set to %s minute(s)" minutes))
 
 (defun chronometer-first-run ()
   (unless chronometer-running
@@ -172,24 +180,17 @@
       (goto-char (point-min))
       (insert chronometer-prompt time-elapsed)
       (when chronometer-paused
-        (insert " (Paused)"))
+        (insert chronometer-prompt-space chronometer-prompt-paused))
       (when chronometer-alarm
-        (insert " (Alarm set to " chronometer-alarm " min)")
+        (insert chronometer-prompt-space (chronometer-prompt-alarm-set chronometer-alarm))
         (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
                    (null chronometer-alarm-ringing))
           (progn
             (setq chronometer-alarm-ringing t)
             (chronometer-mode))))
       (when chronometer-alarm-ringing
-        (if chronometer-alarm-ringing-message
-            (progn
-              (setq chronometer-alarm-ringing-message nil)
-              (insert " Alarm!! Type 'u' to stop ringing!")
-              (beep))
-          (progn
-            (setq chronometer-alarm-ringing-message t)
-            (insert "         Type 'u' to stop ringing!")
-            (beep)))))))
+        (insert chronometer-prompt-space chronometer-prompt-alarm)
+        (beep)))))
 
 ;;;###autoload
 (defun chronometer-mode ()
