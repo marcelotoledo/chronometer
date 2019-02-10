@@ -1,11 +1,11 @@
-;;; chronometer.el --- a [not so] simple chronometer for Emacs -*- lexical-binding: t; -*-
+;;; chronometer.el --- a [not so] simple chronometer -*- lexical-binding: t; -*-
 
 ;; Copyright  (C)  2004-2019  Marcelo Toledo
 
 ;; Author: Marcelo Toledo <marcelo@marcelotoledo.com>
 ;; Maintainer: Marcelo Toledo <marcelo@marcelotoledo.com>
 ;; Created: 21 Jul 2004
-;; Package-Requires: Package-Requires: ((emacs "24.1"))
+;; Package-Requires: ((emacs "24"))
 ;; Version: 2.0
 ;; Keywords: tools, convenience
 ;; URL: https://github.com/marcelotoledo/chronometer
