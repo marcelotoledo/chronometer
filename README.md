@@ -49,4 +49,4 @@ It will automaticaly start from zero and increment every one second.
 | q     | Quit                |
 | ?     | Help                |
 
-If you hide the buffer and want to come back just call `M-x chronometer` again.
+If you hide the buffer and want to come back just call `M-x chronometer-mode` again.
