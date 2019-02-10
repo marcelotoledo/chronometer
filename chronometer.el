@@ -41,7 +41,7 @@
 (defconst chronometer-prompt-paused "Paused"
   "Message when Paused.")
 
-(defconst chronometer-prompt-alarm "Beep! - Type u to stop beeping!"
+(defconst chronometer-prompt-alarm "Beep! - Press s to stop beeping!"
   "Message when beeping.")
 
 (defvar chronometer-start-time nil
@@ -140,7 +140,7 @@
 
 (defun chronometer-first-run ()
   (unless chronometer-running
-    (chronometer-unset-alarm)
+    (chronometer-stop-alarm)
     (when chronometer-paused (chronometer-toggle-pause))
     (chronometer-restart)
     (get-buffer-create chronometer-default-buffer)
@@ -181,16 +181,18 @@
       (insert chronometer-prompt time-elapsed)
       (when chronometer-paused
         (insert chronometer-prompt-space chronometer-prompt-paused))
-      (when chronometer-alarm
-        (insert chronometer-prompt-space (chronometer-prompt-alarm-set chronometer-alarm))
-        (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
-                   (null chronometer-alarm-ringing))
+      (if chronometer-alarm-ringing
           (progn
-            (setq chronometer-alarm-ringing t)
-            (chronometer-mode))))
-      (when chronometer-alarm-ringing
-        (insert chronometer-prompt-space chronometer-prompt-alarm)
-        (beep)))))
+            (insert chronometer-prompt-space chronometer-prompt-alarm)
+            (chronometer-alarm-alert))
+        (progn
+          (when chronometer-alarm
+            (insert chronometer-prompt-space (chronometer-prompt-alarm-set chronometer-alarm))
+            (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
+                       (null chronometer-alarm-ringing))
+              (progn
+                (setq chronometer-alarm-ringing t)
+                (chronometer-mode)))))))))
 
 ;;;###autoload
 (defun chronometer-mode ()
@@ -208,7 +210,6 @@ Use the following commands to use it:
   (use-local-map chronometer-map)
   (setq major-mode 'chronometer-mode
         mode-name "Chronometer"
-        ring-bell-function 'chronometer-alarm-alert
         buffer-read-only t))
 
 (provide 'chronometer)

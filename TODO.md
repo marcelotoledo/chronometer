@@ -6,6 +6,7 @@
 * Allow more input times
 * Make it unable to set alarm to less than the elapsed time is
 * Execute a command alarm is ringing
+* Try using some colors the improve experience
 
 # Bugs
 
