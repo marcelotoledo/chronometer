@@ -33,20 +33,20 @@ Easiest way to install is through MELPA:
 
 After installing:
 
-`M-x chronometer`
+`M-x chronometer-mode`
 
 It will automaticaly start from zero and increment every one second.
 
 ### Available commands
 
-| Command | Description         |
-| -----   | -----               |
-| a       | Set Alarm           |
-| s       | Stop Alarm          |
-| p       | Pause Chronometer   |
-| r       | Restart chronometer |
-| h       | Hide                |
-| q       | Quit                |
-| ?       | Help                |
+| Key   | Description         |
+| ----- | -----               |
+| a     | Set Alarm           |
+| s     | Stop Alarm          |
+| p     | Pause Chronometer   |
+| r     | Restart chronometer |
+| h     | Hide                |
+| q     | Quit                |
+| ?     | Help                |
 
 If you hide the buffer and want to come back just call `M-x chronometer` again.
