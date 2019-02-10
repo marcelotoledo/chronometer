@@ -1,4 +1,4 @@
-;; chronometer.el --- a [not so] simple chronometer for Emacs
+;;; chronometer.el --- a [not so] simple chronometer for Emacs
 
 ;; Copyright  (C)  2004-2019  Marcelo Toledo
 
@@ -26,11 +26,20 @@
 
 ;; Code:
 
+
+;;; Commentary:
+
+;; This is a major mode to help you keep track of time.
+
+;; Chronometer opens in a very discrete buffer, you can set an alarm to whenever you want and you will be alerted accordingly. For your convinience you can hide it to concentrate and you'll still be alerted.
+
+;;; Code:
+
 (defconst chronometer-default-buffer "*chronometer*"
   "The default working buffer.")
 
 (defconst chronometer-buffer-size -5
-  "The height of `chronometer-default-buffer'")
+  "The height of `chronometer-default-buffer'.")
 
 (defconst chronometer-prompt "Chronometer=> "
   "The prompt that will be displayed in the chronometer buffer.")
@@ -96,8 +105,8 @@
         chronometer-alarm-ringing nil))
 
 (defun chronometer-restart ()
-  (interactive)
   "Start chronometer from zero."
+  (interactive)
   (setq chronometer-start-time (current-time)))
 
 (defun chronometer-hide ()
@@ -136,9 +145,11 @@
 
 
 (defun chronometer-prompt-alarm-set (minutes)
+  "Format prompt string with MINUTES to be used when alart is set."
   (format "Alarm set to %s minute(s)" minutes))
 
 (defun chronometer-first-run ()
+  "Prepare chrometer for first run."
   (unless chronometer-running
     (chronometer-stop-alarm)
     (when chronometer-paused (chronometer-toggle-pause))
@@ -148,6 +159,7 @@
           chronometer-running t)))
 
 (defun chronometer-show-buffer ()
+  "Show chronometer buffer."
   (cond ((not (get-buffer-window chronometer-default-buffer))
          (let ((split-window-keep-point nil)
                (window-min-height 2))
@@ -165,11 +177,12 @@
   (cancel-timer chronometer-timer))
 
 (defun chronometer-alarm-alert ()
+  "Invert the modeline colors."
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil #'invert-face 'mode-line))
 
 (defun chronometer-loop ()
-  "This function runs every 'chronometer-interval' second(s) and display data in the buffer."
+  "This function run every 'chronometer-interval' second(s) and display data in the buffer."
   (with-current-buffer chronometer-default-buffer
     (when chronometer-paused
         (chronometer-increment-start-time))
@@ -198,7 +211,8 @@
 (defun chronometer-mode ()
   "A [not so] simple chronometer for Emacs.
 
-Use `M-x chronometer RET' to start, it will automaticaly start from zero and will keep incrementing every second.
+Use `M-x chronometer RET' to start, it will automaticaly start
+from zero and will keep incrementing every second.
 
 Use the following commands to use it:
 
@@ -214,4 +228,4 @@ Use the following commands to use it:
 
 (provide 'chronometer)
 
-;; chronometer ends here
+;;; chronometer.el ends here
