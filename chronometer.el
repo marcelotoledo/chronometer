@@ -88,19 +88,21 @@ Use the following commands to use it:
     (get-buffer-create chronometer-default-buffer)
     (setq chronometer-timer (run-with-timer 1 chronometer-interval 'chronometer-loop)
           chronometer-running t))
-  (cond ((not (get-buffer-window chronometer-default-buffer))
-         (let ((split-window-keep-point nil)
-               (window-min-height 2))
-           (select-window (split-window-vertically chronometer-buffer-size))
-           (switch-to-buffer chronometer-default-buffer)))
-        ((not (eq (current-buffer) chronometer-default-buffer))
-         (select-window (get-buffer-window chronometer-default-buffer))))
+  (chronometer-show-buffer)
   (kill-all-local-variables)
   (setq major-mode 'chronometer-mode
         mode-name "Chronometer")
   (use-local-map chronometer-map)
   (setq buffer-read-only t))
 
+(defun chronometer-show-buffer ()
+  (cond ((not (get-buffer-window chronometer-default-buffer))
+         (let ((split-window-keep-point nil)
+               (window-min-height 2))
+           (select-window (split-window-vertically chronometer-buffer-size))
+           (switch-to-buffer chronometer-default-buffer)))
+        ((not (eq (current-buffer) chronometer-default-buffer))
+         (select-window (get-buffer-window chronometer-default-buffer)))))
 
 (defun chronometer-toggle-pause ()
   "Toggle pause."
@@ -109,13 +111,11 @@ Use the following commands to use it:
       (setq chronometer-paused nil)
     (setq chronometer-paused t)))
 
-
-(defun chronometer-set-alarm ()  
+(defun chronometer-set-alarm ()
   "Set alarm to the minute you would like to alerted."
   (interactive)
   (let ((value (read-from-minibuffer "Set alarm to what minute? ")))
     (setq chronometer-alarm value)))
-
 
 (defun chronometer-unset-alarm ()
   "Unset alarm."
@@ -124,12 +124,10 @@ Use the following commands to use it:
         chronometer-alarm-ringing nil
         chronometer-alarm-ringing-message t))
 
-
 (defun chronometer-restart ()
   (interactive)
   "Start chronometer from zero."
   (setq chronometer-start-time (current-time)))
-
 
 (defun chronometer-loop ()
   "This function runs every 'chronometer-interval' second(s) and display data in the buffer."
@@ -166,11 +164,9 @@ Use the following commands to use it:
   "Add one second in 'chronometer-start-time'."
   (setf (cadr chronometer-start-time) (+ (cadr chronometer-start-time) 1)))
 
-
 (defun chronometer-cancel-timer ()
   "Cancel the chronometer timer."
   (cancel-timer chronometer-timer))
-
 
 (defun chronometer-hide ()
   "Hide chronometer buffer."
