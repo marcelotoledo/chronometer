@@ -1,36 +1,57 @@
-chronometer
-==========
+# chronometer
+---
 
 **A Chronometer for GNU Emacs**
 
-This mode is for counting times. I basically created it because I
-used to cook pizza while coding and I used to forget the time and a
-few minutes later I could smell a burned pizza.
+This is a major mode to help you keep track of time. 
 
-You can use it for whatever purpose you like, but the typical
-scenario is to keep alerted of how much time has past.
+I've created it because I used to cook pizza while coding and regularly
+completely forget about it. Yes, the result a few minutes later was a burned
+pizza that went straight to trash.
 
-To make it available for Emacs, put it in your `load-path' and
-insert (require 'chronometer) in your .emacs.
+It is a major mode that opens in a very discrete buffer, you can set an alarm to
+whenever you want and you will be alerted accordingly. For your convinience you
+can hide it to concentrate and you'll still be alerted.
 
-Use `chronometer' to start the chronometer, it will automaticaly
-start from zero and will keep incrementing every one second.
+## How to Install
+---
 
-From now on you may want to play with the following keybindings:
+### Using MELPA
 
-* a - set alarm
-* u - unset alarm
-* p - toggle pause
-* r - restart
-* h - hide
-* q - exit
-* ? - help
+Easiest way to install is through MELPA:
 
-TODO
-==========
+1. M-x package-refresh-contents RET
+2. M-x package-install RET
+3. Write Chronometer and hit enter
 
-* stop/start
-* count down (maybe)
-* allow more input formats for the alarm
-* make it unable to set alarm to less then the elapsed time is
-* execute a command when reach alarm
+### Manually
+
+1. Clone the repo in your machine
+2. Load the file using  `(load-file "~/location/chronometer.el")`
+
+## How to use it
+---
+
+After installing:
+
+`M-x chronometer`
+
+It will automaticaly start from zero and increment every one second.
+
+### Available commands
+
+* a - Set alarm
+* u - Unset alarm
+* p - Pause chronometer
+* r - Restart chronometer
+* h - Hide buffer
+* q - Exit
+* ? - Help
+
+If you hide the buffer and want to come back just call `M-x chronometer` again.
+
+
+## To Do
+---
+
+Look for enhancements in github issues tab.
