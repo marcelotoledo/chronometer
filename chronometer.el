@@ -81,19 +81,22 @@ Use the following commands to use it:
 
 \\{chronometer-map}"
   (interactive)
+  (chronometer-first-run)
+  (chronometer-show-buffer)
+  (kill-all-local-variables)
+  (use-local-map chronometer-map)
+  (setq major-mode 'chronometer-mode
+        mode-name "Chronometer"
+        buffer-read-only t))
+
+(defun chronometer-first-run ()
   (unless chronometer-running
     (chronometer-unset-alarm)
     (when chronometer-paused (chronometer-toggle-pause))
     (chronometer-restart)
     (get-buffer-create chronometer-default-buffer)
     (setq chronometer-timer (run-with-timer 1 chronometer-interval 'chronometer-loop)
-          chronometer-running t))
-  (chronometer-show-buffer)
-  (kill-all-local-variables)
-  (setq major-mode 'chronometer-mode
-        mode-name "Chronometer")
-  (use-local-map chronometer-map)
-  (setq buffer-read-only t))
+          chronometer-running t)))
 
 (defun chronometer-show-buffer ()
   (cond ((not (get-buffer-window chronometer-default-buffer))
