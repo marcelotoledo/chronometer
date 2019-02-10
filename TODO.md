@@ -1,5 +1,7 @@
 # To Do
 
+* Improve organization of chronometer-loop. Including specific function for
+  displaying messages.
 * Instead of subtracting time from start time, create new variable and sum both
 * start/stop
 * Count down
