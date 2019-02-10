@@ -1,9 +1,8 @@
 # chronometer
----
-
-![Screenshot](screenshots/chronometer.png)
 
 **A Chronometer for GNU Emacs**
+
+![Screenshot](screenshots/chronometer.png)
 
 This is a major mode to help you keep track of time. 
 
@@ -16,7 +15,6 @@ whenever you want and you will be alerted accordingly. For your convinience you
 can hide it to concentrate and you'll still be alerted.
 
 ## How to Install
----
 
 ### Using MELPA
 
@@ -32,7 +30,6 @@ Easiest way to install is through MELPA:
 2. Load the file using  `(load-file "~/location/chronometer.el")`
 
 ## How to use it
----
 
 After installing:
 
