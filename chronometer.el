@@ -81,15 +81,13 @@ Use the following commands to use it:
 
 \\{chronometer-map}"
   (interactive)
-  (if (not chronometer-running)
-      (progn
-        (chronometer-unset-alarm)
-        (if chronometer-paused
-            (chronometer-toggle-pause))
-        (chronometer-restart)
-        (get-buffer-create chronometer-default-buffer)
-        (setq chronometer-timer (run-with-timer 1 chronometer-interval 'chronometer-loop))
-        (setq chronometer-running t)))
+  (unless chronometer-running
+    (chronometer-unset-alarm)
+    (when chronometer-paused (chronometer-toggle-pause))
+    (chronometer-restart)
+    (get-buffer-create chronometer-default-buffer)
+    (setq chronometer-timer (run-with-timer 1 chronometer-interval 'chronometer-loop)
+          chronometer-running t))
   (cond ((not (get-buffer-window chronometer-default-buffer))
          (let ((split-window-keep-point nil)
                (window-min-height 2))
@@ -106,6 +104,7 @@ Use the following commands to use it:
 
 (defun chronometer-toggle-pause ()
   "Toggle pause."
+  (interactive)
   (if chronometer-paused
       (setq chronometer-paused nil)
     (setq chronometer-paused t)))
@@ -113,18 +112,21 @@ Use the following commands to use it:
 
 (defun chronometer-set-alarm ()  
   "Set alarm to the minute you would like to alerted."
+  (interactive)
   (let ((value (read-from-minibuffer "Set alarm to what minute? ")))
     (setq chronometer-alarm value)))
 
 
 (defun chronometer-unset-alarm ()
   "Unset alarm."
+  (interactive)
   (setq chronometer-alarm nil
         chronometer-alarm-ringing nil
         chronometer-alarm-ringing-message t))
 
 
 (defun chronometer-restart ()
+  (interactive)
   "Start chronometer from zero."
   (setq chronometer-start-time (current-time)))
 
@@ -172,12 +174,14 @@ Use the following commands to use it:
 
 (defun chronometer-hide ()
   "Hide chronometer buffer."
+  (interactive)
   (set-buffer chronometer-default-buffer)
   (while (get-buffer-window chronometer-default-buffer)
     (delete-window (get-buffer-window chronometer-default-buffer))))
 
 (defun chronometer-quit ()
   "Quit chronometer."
+  (interactive)
   (set-buffer chronometer-default-buffer)
   (let ((inhibit-read-only t))
     (erase-buffer))
@@ -190,13 +194,15 @@ Use the following commands to use it:
 
 (defun chronometer-help ()
   "Quick reference:
-* a - set alarm.
-* u - unset alarm.
-* p - toggle pause.
-* r - restart.
-* h - hide.
-* q - exit.
-* ? - help."
+
+* a - Set alarm
+* u - Unset alarm
+* p - Toggle pause
+* r - Restart chronometer
+* h - Hide
+* q - Exit
+* ? - Help"
+  (interactive)
   (if (eq last-command 'chronometer-help)
     (let ((mode-name "chronometer-mode")
           (major-mode 'chronometer-mode)
