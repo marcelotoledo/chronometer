@@ -40,6 +40,7 @@ It will automaticaly start from zero and increment every one second.
 ### Available commands
 
 | Command | Description         |
+| -----   | -----               |
 | a       | Set Alarm           |
 | s       | Stop Alarm          |
 | p       | Pause Chronometer   |
