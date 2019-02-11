@@ -182,13 +182,18 @@
   (invert-face 'mode-line)
   (run-with-timer 0.1 nil #'invert-face 'mode-line))
 
+(defun chronometer-minutes-elapsed ()
+  (let ((hours (string-to-number (format-time-string "%H" (time-subtract (current-time) chronometer-start-time) t)))
+        (minutes (string-to-number (format-time-string "%M" (time-subtract (current-time) chronometer-start-time) t))))
+    (+ (* hours 60) minutes)))
+
 (defun chronometer-loop ()
   "This function run every 'chronometer-interval' second(s) and display data in the buffer."
   (with-current-buffer chronometer-default-buffer
     (when chronometer-paused
         (chronometer-increment-start-time))
     (let ((time-elapsed (format-time-string "%H:%M:%S" (time-subtract (current-time) chronometer-start-time) t))
-          (minutes-elapsed (+ (* (string-to-number (format-time-string "%H" (time-subtract (current-time) chronometer-start-time) t)) 60) (string-to-number (format-time-string "%M" (time-subtract (current-time) chronometer-start-time) t))))
+          (minutes-elapsed (chronometer-minutes-elapsed))
           (inhibit-read-only t))
       (erase-buffer)
       (goto-char (point-min))
