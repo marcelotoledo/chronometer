@@ -129,13 +129,13 @@
 (defun chronometer-help ()
   "Quick reference:
 
-* a - Set alarm
-* s - Stop alarm
-* p - Toggle pause
-* r - Restart chronometer
-* h - Hideeb
-* q - Exit
-* ? - Help"
+* \\[chronometer-set-alarm] - Set alarm
+* \\[chronometer-stop-alarm] - Stop alarm
+* \\[chronometer-toggle-pause] - Toggle pause
+* \\[chronometer-restart] - Restart Chronometer
+* \\[chronometer-hide] - Hide
+* \\[chronometer-quit] - Exit
+* \\[chronometer-help] - Help"
   (interactive)
   (save-window-excursion
     (with-output-to-temp-buffer "*Help*"
@@ -150,7 +150,7 @@
   (format "Alarm set to %s minute(s)" minutes))
 
 (defun chronometer-first-run ()
-  "Prepare chrometer for first run."
+  "Prepare chronometer for first run."
   (unless chronometer-running
     (chronometer-stop-alarm)
     (when chronometer-paused (chronometer-toggle-pause))
@@ -183,6 +183,7 @@
   (run-with-timer 0.1 nil #'invert-face 'mode-line))
 
 (defun chronometer-minutes-elapsed ()
+  "Calculate the number of minutes elapsed."
   (let ((hours (string-to-number (format-time-string "%H" (time-subtract (current-time) chronometer-start-time) t)))
         (minutes (string-to-number (format-time-string "%M" (time-subtract (current-time) chronometer-start-time) t))))
     (+ (* hours 60) minutes)))
@@ -217,7 +218,7 @@
 (defun chronometer-mode ()
   "A [not so] simple chronometer for Emacs.
 
-Use `M-x chronometer RET' to start, it will automaticaly start
+Use `M-x ‘chronometer-mode’ RET' to start, it will automaticaly start
 from zero and will keep incrementing every second.
 
 Use the following commands to use it:
