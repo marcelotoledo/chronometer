@@ -210,9 +210,8 @@
             (insert chronometer-prompt-space (chronometer-prompt-alarm-set chronometer-alarm))
             (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
                        (null chronometer-alarm-ringing))
-              (progn
-                (setq chronometer-alarm-ringing t)
-                (chronometer-mode)))))))))
+              (setq chronometer-alarm-ringing t)
+              (chronometer-mode))))))))
 
 ;;;###autoload
 (defun chronometer-mode ()
