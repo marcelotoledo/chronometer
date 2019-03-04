@@ -92,7 +92,7 @@
 (defun chronometer-toggle-pause ()
   "Toggle pause."
   (interactive)
-  (setq chronometer-paused (if chronometer-paused nil t)))
+  (setq chronometer-paused (not chronometer-paused)))
 
 (defun chronometer-set-alarm ()
   "Set alarm to the minute you would like to alerted."
@@ -218,7 +218,7 @@
 (defun chronometer-mode ()
   "A [not so] simple chronometer for Emacs.
 
-Use `M-x ‘chronometer-mode’ RET' to start, it will automaticaly start
+Use `M-x ‘chronometer-mode’ RET' to start, it will automatically start
 from zero and will keep incrementing every second.
 
 Use the following commands to use it:
