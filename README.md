@@ -33,7 +33,7 @@ Easiest way to install is through MELPA:
 
 After installing:
 
-`M-x chronometer-mode`
+`M-x chronometer RET`
 
 It will automaticaly start from zero and increment every one second.
 
@@ -49,4 +49,4 @@ It will automaticaly start from zero and increment every one second.
 | q     | Quit                |
 | ?     | Help                |
 
-If you hide the buffer and want to come back just call `M-x chronometer-mode` again.
+If you hide the buffer and want to come back just call `M-x chronometer RET` again.

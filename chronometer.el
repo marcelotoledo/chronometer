@@ -75,7 +75,7 @@
 (defconst chronometer-running nil
   "If chronometer is running this variable will be true, otherwise false.")
 
-(defvar chronometer-map
+(defvar chronometer-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "s") #'chronometer-stop-alarm)
     (define-key map (kbd "a") #'chronometer-set-alarm)
@@ -205,32 +205,33 @@
           (progn
             (insert chronometer-prompt-space chronometer-prompt-alarm)
             (chronometer-alarm-alert))
-        (progn
-          (when chronometer-alarm
-            (insert chronometer-prompt-space (chronometer-prompt-alarm-set chronometer-alarm))
-            (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
-                       (null chronometer-alarm-ringing))
-              (setq chronometer-alarm-ringing t)
-              (chronometer-mode))))))))
+        (when chronometer-alarm
+          (insert chronometer-prompt-space (chronometer-prompt-alarm-set chronometer-alarm))
+          (when (and (>= minutes-elapsed (string-to-number chronometer-alarm))
+                     (null chronometer-alarm-ringing))
+            (setq chronometer-alarm-ringing t)
+            (chronometer)))))))
+
+(define-derived-mode chronometer-mode special-mode "Chronometer"
+  "Major mode for controlling Chronometer, use `M-x ‘chronometer’
+  RET' to start it and the following commands to interact with
+  it:
+
+\\{chronometer-mode-map}")
 
 ;;;###autoload
-(defun chronometer-mode ()
-  "A [not so] simple chronometer for Emacs.
+(defun chronometer ()
+  "A [not so] simple chronometer.
 
-Use `M-x ‘chronometer-mode’ RET' to start, it will automatically start
-from zero and will keep incrementing every second.
+Use this function to start, it will automatically start from zero
+and will keep incrementing every second. Use the following
+commands to interact with it:
 
-Use the following commands to use it:
-
-\\{chronometer-map}"
+\\{chronometer-mode-map}"
   (interactive)
   (chronometer-first-run)
   (chronometer-show-buffer)
-  (kill-all-local-variables)
-  (use-local-map chronometer-map)
-  (setq major-mode 'chronometer-mode
-        mode-name "Chronometer"
-        buffer-read-only t))
+  (chronometer-mode))
 
 (provide 'chronometer)
 
